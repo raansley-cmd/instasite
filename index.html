@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InstaSite™ — Your Business Website in Minutes</title>
+  <meta name="description" content="InstaSite™ generates a beautiful, professional website for your small business in minutes. Answer a few questions, get a stunning website. Just $29/month.">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Raleway:wght@300;400;500;600;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:       #1B2A4A;
+      --navy-deep:  #111D33;
+      --navy-mid:   #2C3E6B;
+      --blue-soft:  #4A6FA5;
+      --cream:      #F8F5EF;
+      --cream-dark: #EDE8DF;
+      --gold:       #C9A96E;
+      --gold-light: #E2C99A;
+      --gold-pale:  #F5EDD8;
+      --white:      #FFFFFF;
+      --text-muted: #6B7A99;
+      --sage:       #4A7C59;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: var(--cream);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--navy-deep);
+      padding: 0 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Dancing Script', cursive;
+      font-size: 26px;
+      color: var(--cream);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(248,245,239,0.65);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold);
+      color: var(--navy-deep);
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 11px 24px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold-light); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--navy-deep);
+      min-height: 94vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 900px; height: 900px;
+      background: radial-gradient(circle, rgba(201,169,110,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(74,111,165,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 860px;
+    }
+    .hero-eyebrow {
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--gold);
+      opacity: 0.4;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(42px, 6vw, 80px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.08;
+      margin-bottom: 12px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-script {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(28px, 3.5vw, 44px);
+      color: var(--gold-light);
+      display: block;
+      margin-bottom: 32px;
+    }
+    .hero-divider {
+      width: 60px; height: 2px;
+      background: var(--gold);
+      margin: 0 auto 32px;
+      opacity: 0.6;
+    }
+    .hero p {
+      font-family: 'Raleway', sans-serif;
+      font-size: 17px;
+      font-weight: 300;
+      color: rgba(248,245,239,0.7);
+      line-height: 1.95;
+      max-width: 620px;
+      margin: 0 auto 48px;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 64px;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy-deep);
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 16px 42px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--gold-light); }
+    .btn-outline {
+      background: transparent;
+      color: var(--cream);
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 15px 42px;
+      border: 1px solid rgba(248,245,239,0.3);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* Hero stats */
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      justify-content: center;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(248,245,239,0.1);
+      padding-top: 40px;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-style: italic;
+      color: var(--gold);
+      display: block;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .hero-stat-label {
+      font-family: 'Raleway', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(248,245,239,0.4);
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-bar {
+      background: var(--gold);
+      padding: 12px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-inner {
+      display: inline-block;
+      animation: marquee 30s linear infinite;
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--navy-deep);
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how-section {
+      padding: 100px 40px;
+      background: var(--cream);
+      text-align: center;
+    }
+    .section-label {
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 3.5vw, 44px);
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 0;
+    }
+    .section-title em { font-style: italic; color: var(--blue-soft); }
+    .section-divider {
+      width: 50px; height: 2px;
+      background: var(--gold);
+      margin: 24px auto;
+    }
+    .steps-grid {
+      max-width: 1100px;
+      margin: 56px auto 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      position: relative;
+    }
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 36px; left: 12%;
+      width: 76%; height: 1px;
+      background: var(--gold);
+      opacity: 0.2;
+    }
+    .step-card {
+      background: var(--white);
+      padding: 36px 24px 32px;
+      position: relative;
+      border-bottom: 3px solid var(--gold);
+    }
+    .step-number {
+      width: 52px; height: 52px;
+      background: var(--navy);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .step-number span {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-style: italic;
+      color: var(--gold);
+    }
+    .step-icon {
+      font-size: 28px;
+      display: block;
+      margin-bottom: 14px;
+    }
+    .step-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .step-card p {
+      font-family: 'Raleway', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    /* ── BUSINESS TYPES ── */
+    .businesses-section {
+      background: var(--navy);
+      padding: 100px 40px;
+      text-align: center;
+    }
+    .businesses-section .section-title { color: var(--white); }
+    .businesses-grid {
+      max-width: 1000px;
+      margin: 56px auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .business-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,169,110,0.2);
+      padding: 32px 24px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .business-card:hover {
+      background: rgba(201,169,110,0.08);
+      border-color: var(--gold);
+      transform: translateY(-3px);
+    }
+    .business-icon {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 14px;
+    }
+    .business-card h3 {
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .business-card p {
+      font-family: 'Raleway', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(248,245,239,0.5);
+      line-height: 1.7;
+    }
+
+    /* ── FEATURES ── */
+    .features-section {
+      padding: 100px 40px;
+      background: var(--cream-dark);
+    }
+    .features-header {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+    .features-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .feature-card {
+      background: var(--white);
+      padding: 36px 28px;
+      border-top: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .feature-card:hover {
+      border-top-color: var(--gold);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(27,42,74,0.08);
+    }
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .feature-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .feature-card p {
+      font-family: 'Raleway', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.85;
+    }
+
+    /* ── PRICING ── */
+    .pricing-section {
+      padding: 100px 40px;
+      background: var(--cream);
+      text-align: center;
+    }
+    .pricing-card {
+      max-width: 480px;
+      margin: 56px auto 0;
+      background: var(--navy);
+      padding: 52px 44px;
+      position: relative;
+    }
+    .pricing-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--navy-deep);
+      font-family: 'Raleway', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 5px 20px;
+      white-space: nowrap;
+    }
+    .pricing-name {
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .pricing-amount {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+    .pricing-currency {
+      font-family: 'Raleway', sans-serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--gold);
+    }
+    .pricing-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+    }
+    .pricing-period {
+      font-family: 'Raleway', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(248,245,239,0.45);
+      margin-bottom: 8px;
+    }
+    .pricing-trial {
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--sage);
+      letter-spacing: 1px;
+      margin-bottom: 32px;
+    }
+    .pricing-divider {
+      width: 100%; height: 1px;
+      background: rgba(248,245,239,0.1);
+      margin-bottom: 32px;
+    }
+    .pricing-features {
+      list-style: none;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 40px;
+    }
+    .pricing-features li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(248,245,239,0.8);
+    }
+    .pricing-features li::before {
+      content: '✦';
+      color: var(--gold);
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+    .btn-gold {
+      display: block;
+      background: var(--gold);
+      color: var(--navy-deep);
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 16px;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.2s;
+      width: 100%;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-gold:hover { background: var(--gold-light); }
+    .pricing-note {
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--text-muted);
+      margin-top: 20px;
+    }
+
+    /* ── TESTIMONIAL ── */
+    .testimonial-section {
+      background: var(--navy-deep);
+      padding: 80px 40px;
+      text-align: center;
+    }
+    .testimonial-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(18px, 2.5vw, 26px);
+      font-style: italic;
+      color: var(--white);
+      max-width: 760px;
+      margin: 0 auto 32px;
+      line-height: 1.75;
+    }
+    .testimonial-author {
+      font-family: 'Dancing Script', cursive;
+      font-size: 24px;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .testimonial-title {
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(248,245,239,0.35);
+    }
+    .testimonial-stars {
+      font-size: 16px;
+      color: var(--gold);
+      letter-spacing: 4px;
+      display: block;
+      margin-bottom: 28px;
+    }
+
+    /* ── FINAL CTA ── */
+    .final-cta {
+      background: var(--gold);
+      padding: 100px 40px;
+      text-align: center;
+    }
+    .final-cta h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      color: var(--navy-deep);
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .final-cta h2 em { font-style: italic; }
+    .final-cta p {
+      font-family: 'Raleway', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--navy);
+      max-width: 500px;
+      margin: 0 auto 40px;
+      line-height: 1.85;
+      opacity: 0.8;
+    }
+    .btn-navy {
+      background: var(--navy-deep);
+      color: var(--cream);
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 16px 48px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+    .btn-navy:hover { background: var(--navy-mid); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy-deep);
+      border-top: 1px solid rgba(201,169,110,0.15);
+      padding: 48px 40px 28px;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Dancing Script', cursive;
+      font-size: 28px;
+      color: var(--cream);
+      display: block;
+      margin-bottom: 20px;
+    }
+    .footer-logo span { color: var(--gold); }
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      justify-content: center;
+      list-style: none;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(248,245,239,0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-line {
+      width: 40px; height: 1px;
+      background: var(--gold);
+      opacity: 0.3;
+      margin: 0 auto 16px;
+    }
+    .footer-copy {
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: rgba(248,245,239,0.25);
+      line-height: 2;
+    }
+    .footer-powered {
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      color: rgba(248,245,239,0.2);
+      margin-top: 8px;
+    }
+    .footer-powered a {
+      color: var(--gold);
+      opacity: 0.5;
+      text-decoration: none;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      nav { padding: 10px 16px 8px; flex-wrap: wrap; height: auto; gap: 8px; }
+      .nav-logo { order: 1; }
+      .nav-cta { order: 3; font-size: 9px; padding: 9px 16px; margin: 2px auto 0; width: fit-content; }
+      .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; width: 100%; padding: 6px 0 2px; border-top: 1px solid rgba(201,169,110,0.15); order: 2; }
+      .nav-links a { font-size: 9px; }
+      .hero { padding: 60px 24px; min-height: auto; }
+      .hero-stats { gap: 24px; }
+      .how-section { padding: 56px 24px; }
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid::before { display: none; }
+      .businesses-section { padding: 56px 24px; }
+      .businesses-grid { grid-template-columns: repeat(2, 1fr); }
+      .features-section { padding: 56px 24px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .pricing-section { padding: 56px 24px; }
+      .pricing-card { padding: 40px 28px; }
+      .final-cta { padding: 72px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">InstaSite<span>™</span></a>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#businesses">Business Types</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <a href="#pricing" class="nav-cta">Start Free Trial</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Your Website in Minutes</p>
+    <h1>A Beautiful Website<br>for Your Business,<br><em>Instantly Generated</em></h1>
+    <span class="hero-script">No coding. No designers. No waiting.</span>
+    <div class="hero-divider"></div>
+    <p>Answer a few simple questions about your business and InstaSite™ builds you a stunning, professional website in minutes. Mobile-friendly, SEO-ready, and live the same day.</p>
+    <div class="hero-btns">
+      <a href="#pricing" class="btn-primary">Start Your Free Trial</a>
+      <a href="#how" class="btn-outline">See How It Works</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num">3</span>
+        <span class="hero-stat-label">Minutes to Build</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">6</span>
+        <span class="hero-stat-label">Business Types</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">$29</span>
+        <span class="hero-stat-label">Per Month</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">7</span>
+        <span class="hero-stat-label">Day Free Trial</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-inner">
+    &nbsp;&nbsp;&nbsp;Bakeries &nbsp;·&nbsp; Hair Salons &nbsp;·&nbsp; Contractors &nbsp;·&nbsp; Fitness Studios &nbsp;·&nbsp; Medical Offices &nbsp;·&nbsp; Retail Shops &nbsp;·&nbsp; No Coding Required &nbsp;·&nbsp; Live in Minutes &nbsp;·&nbsp; Mobile Friendly &nbsp;·&nbsp; Just $29/Month &nbsp;·&nbsp; 7-Day Free Trial &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bakeries &nbsp;·&nbsp; Hair Salons &nbsp;·&nbsp; Contractors &nbsp;·&nbsp; Fitness Studios &nbsp;·&nbsp; Medical Offices &nbsp;·&nbsp; Retail Shops &nbsp;·&nbsp; No Coding Required &nbsp;·&nbsp; Live in Minutes &nbsp;·&nbsp; Mobile Friendly &nbsp;·&nbsp; Just $29/Month &nbsp;·&nbsp; 7-Day Free Trial &nbsp;&nbsp;&nbsp;
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <p class="section-label">Simple Process</p>
+  <h2 class="section-title">Your Website in<br><em>4 Easy Steps</em></h2>
+  <div class="section-divider"></div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-number"><span>1</span></div>
+      <span class="step-icon">📋</span>
+      <h3>Tell Us About Your Business</h3>
+      <p>Answer a few simple questions — your business name, type, colors, and what you offer. Takes about 3 minutes.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number"><span>2</span></div>
+      <span class="step-icon">🖼️</span>
+      <h3>Upload Your Photos & Logo</h3>
+      <p>Add your logo and a few photos of your business, products, or team. Don't have any? We'll use beautiful placeholders.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number"><span>3</span></div>
+      <span class="step-icon">✨</span>
+      <h3>InstaSite™ Builds It</h3>
+      <p>Our system instantly generates a beautiful, fully responsive website tailored specifically to your business type.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number"><span>4</span></div>
+      <span class="step-icon">🚀</span>
+      <h3>Go Live Today</h3>
+      <p>Review your site, make any tweaks, and publish. Your business is online and ready for customers — same day.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS TYPES -->
+<section class="businesses-section" id="businesses">
+  <p class="section-label">Who It's For</p>
+  <h2 class="section-title" style="color:var(--white);">Built for <em style="color:var(--gold);">Your Industry</em></h2>
+  <div class="section-divider"></div>
+  <div class="businesses-grid">
+    <div class="business-card">
+      <span class="business-icon">🎂</span>
+      <h3>Bakery & Food</h3>
+      <p>Showcase your menu, take custom orders, and tell your story with a mouth-watering website.</p>
+    </div>
+    <div class="business-card">
+      <span class="business-icon">💇</span>
+      <h3>Hair Salon & Beauty</h3>
+      <p>Display your services, pricing, and portfolio. Let clients book appointments directly from your site.</p>
+    </div>
+    <div class="business-card">
+      <span class="business-icon">🔨</span>
+      <h3>Contractor & Handyman</h3>
+      <p>Show your work, list your services, and make it easy for homeowners to request a quote.</p>
+    </div>
+    <div class="business-card">
+      <span class="business-icon">💪</span>
+      <h3>Fitness & Personal Training</h3>
+      <p>Promote your classes, share your credentials, and help clients start their fitness journey.</p>
+    </div>
+    <div class="business-card">
+      <span class="business-icon">🏥</span>
+      <h3>Medical & Dental</h3>
+      <p>Build trust with a professional, clean website that makes patients feel confident before their visit.</p>
+    </div>
+    <div class="business-card">
+      <span class="business-icon">🛍️</span>
+      <h3>Retail Shop</h3>
+      <p>Showcase your products, share your store hours, and drive foot traffic with a stunning online presence.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="features-header">
+    <p class="section-label">Everything Included</p>
+    <h2 class="section-title">Professional Features,<br><em>Zero Complexity</em></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">📱</span>
+      <h3>Mobile Responsive</h3>
+      <p>Every website looks and works perfectly on phones, tablets, and desktops. Your customers browse on their phones — your site is ready.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔍</span>
+      <h3>SEO Optimized</h3>
+      <p>Built-in SEO meta tags, structured content, and fast loading speeds help your business show up in Google search results.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">✉️</span>
+      <h3>Contact Forms</h3>
+      <p>Every website includes a contact form that sends customer inquiries directly to your email. Never miss a lead.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔒</span>
+      <h3>Secure & Fast</h3>
+      <p>SSL certificate included automatically. Your site loads fast and is protected — giving customers confidence to reach out.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🎨</span>
+      <h3>Custom Branding</h3>
+      <p>Your colors, your logo, your fonts. Every website is generated to match your brand — not a generic template.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🌐</span>
+      <h3>Free Hosting Included</h3>
+      <p>No separate hosting fees. Your website is hosted and live as part of your $29/month subscription. Everything in one place.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <p class="section-label">Simple Pricing</p>
+  <h2 class="section-title">One Plan.<br><em>Everything Included.</em></h2>
+  <div class="section-divider"></div>
+  <div class="pricing-card">
+    <span class="pricing-badge">Most Popular</span>
+    <p class="pricing-name">Business Plan</p>
+    <div class="pricing-amount">
+      <span class="pricing-currency">$</span>
+      <span class="pricing-number">29</span>
+    </div>
+    <p class="pricing-period">per month &nbsp;·&nbsp; cancel anytime</p>
+    <p class="pricing-trial">✦ &nbsp; 7-Day Free Trial — No Credit Card Required &nbsp; ✦</p>
+    <div class="pricing-divider"></div>
+    <ul class="pricing-features">
+      <li>Beautiful custom generated website</li>
+      <li>Up to 5 pages (Home, About, Services, Gallery, Contact)</li>
+      <li>Mobile responsive on all devices</li>
+      <li>SEO optimized for Google</li>
+      <li>Contact form with email notifications</li>
+      <li>Photo gallery for your work</li>
+      <li>SSL certificate included</li>
+      <li>Free hosting — no extra fees</li>
+      <li>Update your content anytime</li>
+      <li>Human support from a real web designer</li>
+    </ul>
+    <a href="#" class="btn-gold">Start Your Free 7-Day Trial</a>
+  </div>
+  <p class="pricing-note">No contracts. No hidden fees. Cancel anytime. &nbsp;·&nbsp; Accepting Zelle, Venmo & PayPal</p>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial-section">
+  <span class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+  <p class="testimonial-quote">&ldquo;I had no idea how to get a website for my bakery. InstaSite™ had me live in less than an hour. My customers love it and I&rsquo;ve already gotten new orders directly from my site. Worth every penny!&rdquo;</p>
+  <span class="testimonial-author">Sarah M.</span>
+  <span class="testimonial-title">Owner &nbsp;·&nbsp; Sweet Creations Bakery &nbsp;·&nbsp; Temecula, CA</span>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <h2>Your Business Deserves<br><em>to Be Found Online</em></h2>
+  <p>Join hundreds of small business owners who launched their professional website with InstaSite™ — no coding, no designers, no waiting.</p>
+  <a href="#pricing" class="btn-navy">Start Your Free Trial Today</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">InstaSite<span>™</span></span>
+  <div class="footer-line"></div>
+  <ul class="footer-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#businesses">Business Types</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <p class="footer-copy">&copy; 2025 InstaSite&trade; &nbsp;·&nbsp; All Rights Reserved</p>
+  <p class="footer-powered">Powered by <a href="https://www.raa-designs.com">RAA Designs</a></p>
+</footer>
+
+</body>
+</html>
