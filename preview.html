@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Website Preview — InstaSite™</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black:      #0a0a0a;
+      --black-mid:  #111111;
+      --black-soft: #1a1a1a;
+      --grey:       #333333;
+      --grey-light: #555555;
+      --pink:       #FF6B9D;
+      --pink-dark:  #C94D7A;
+      --yellow:     #FFD166;
+      --teal:       #06D6A0;
+      --white:      #ffffff;
+      --primary:    #FF6B9D;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+    }
+
+    /* ── TOP BANNER ── */
+    .preview-banner {
+      background: linear-gradient(90deg, var(--pink), var(--yellow));
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .banner-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .banner-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--black);
+      letter-spacing: -0.5px;
+    }
+    .banner-divider {
+      width: 1px; height: 20px;
+      background: rgba(0,0,0,0.2);
+    }
+    .banner-text {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--black);
+    }
+    .banner-text span {
+      font-weight: 400;
+      opacity: 0.7;
+    }
+    .banner-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .banner-edit {
+      background: rgba(0,0,0,0.15);
+      color: var(--black);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .banner-edit:hover { background: rgba(0,0,0,0.25); }
+    .banner-cta {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .banner-cta:hover { background: var(--black-soft); transform: translateY(-1px); }
+
+    /* ── DEVICE TOGGLE ── */
+    .device-bar {
+      background: var(--black-mid);
+      border-bottom: 1px solid var(--grey);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .device-btn {
+      background: transparent;
+      border: 1px solid var(--grey);
+      color: rgba(255,255,255,0.4);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .device-btn:hover { border-color: var(--pink); color: var(--pink); }
+    .device-btn.active { background: var(--pink); border-color: var(--pink); color: var(--white); }
+
+    /* ── PREVIEW FRAME WRAP ── */
+    .preview-outer {
+      background: var(--black-soft);
+      padding: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: calc(100vh - 120px);
+    }
+    .preview-frame-wrap {
+      transition: all 0.4s ease;
+      width: 100%;
+      max-width: 1200px;
+      background: white;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .preview-frame-wrap.mobile {
+      max-width: 390px;
+      border-radius: 36px;
+      border: 8px solid #222;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.7);
+    }
+
+    /* ── GENERATED WEBSITE INSIDE PREVIEW ── */
+    /* These styles apply to the rendered website */
+    .site-wrap { font-family: 'Raleway', sans-serif; color: #1B2A4A; }
+
+    /* Generated site nav */
+    .site-nav {
+      background: var(--primary-color, #1B2A4A);
+      padding: 0 40px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .site-nav-logo {
+      font-family: 'Dancing Script', cursive;
+      font-size: 24px;
+      font-weight: 600;
+      color: #F8F5EF;
+    }
+    .site-nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .site-nav-links a {
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(248,245,239,0.7);
+      text-decoration: none;
+    }
+    .site-nav-btn {
+      background: var(--accent-color, #C9A96E);
+      color: #111;
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 10px 22px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Generated site hero */
+    .site-hero {
+      background: var(--primary-color, #1B2A4A);
+      min-height: 480px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 64px 40px;
+      gap: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .site-hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    }
+    .site-hero-eyebrow {
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent-color, #C9A96E);
+      margin-bottom: 16px;
+    }
+    .site-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 3.5vw, 52px);
+      font-weight: 700;
+      color: #F8F5EF;
+      line-height: 1.12;
+      margin-bottom: 20px;
+    }
+    .site-hero h1 em { font-style: italic; color: var(--accent-color, #C9A96E); }
+    .site-hero-divider {
+      width: 40px; height: 2px;
+      background: var(--accent-color, #C9A96E);
+      margin-bottom: 20px;
+      opacity: 0.6;
+    }
+    .site-hero p {
+      font-family: 'Raleway', sans-serif;
+      font-size: 15px;
+      font-weight: 300;
+      color: rgba(248,245,239,0.7);
+      line-height: 1.85;
+      margin-bottom: 32px;
+    }
+    .site-hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    .site-btn-primary {
+      background: var(--accent-color, #C9A96E);
+      color: #111;
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 13px 28px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .site-btn-outline {
+      background: transparent;
+      color: #F8F5EF;
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 12px 28px;
+      border: 1px solid rgba(248,245,239,0.3);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .site-hero-image {
+      background: rgba(255,255,255,0.08);
+      border-radius: 8px;
+      height: 340px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 72px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Marquee */
+    .site-marquee {
+      background: var(--accent-color, #C9A96E);
+      padding: 10px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .site-marquee-inner {
+      display: inline-block;
+      animation: marquee 20s linear infinite;
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #111;
+    }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* Services section */
+    .site-services {
+      padding: 72px 40px;
+      background: #F8F5EF;
+    }
+    .site-section-label {
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent-color, #C9A96E);
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .site-section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 34px;
+      font-weight: 700;
+      color: #1B2A4A;
+      text-align: center;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .site-section-title em { font-style: italic; }
+    .site-section-divider {
+      width: 40px; height: 2px;
+      background: var(--accent-color, #C9A96E);
+      margin: 16px auto 48px;
+    }
+    .site-services-grid {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .site-service-card {
+      background: #fff;
+      padding: 28px 20px;
+      border-top: 3px solid var(--accent-color, #C9A96E);
+      text-align: center;
+    }
+    .site-service-icon { font-size: 32px; display: block; margin-bottom: 12px; }
+    .site-service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #1B2A4A;
+      margin-bottom: 8px;
+    }
+    .site-service-card p {
+      font-family: 'Raleway', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      color: #6B7A99;
+      line-height: 1.7;
+    }
+
+    /* About section */
+    .site-about {
+      background: var(--primary-color, #1B2A4A);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 360px;
+    }
+    .site-about-image {
+      background: rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 72px;
+    }
+    .site-about-text {
+      padding: 56px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .site-about-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: #F8F5EF;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+    .site-about-text h2 em { font-style: italic; color: var(--accent-color, #C9A96E); }
+    .site-about-text p {
+      font-family: 'Raleway', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(248,245,239,0.65);
+      line-height: 1.9;
+    }
+
+    /* Contact section */
+    .site-contact {
+      background: #EDE8DF;
+      padding: 64px 40px;
+      text-align: center;
+    }
+    .site-contact-grid {
+      max-width: 600px;
+      margin: 40px auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .site-contact-item {
+      background: #fff;
+      padding: 24px 16px;
+      border-top: 3px solid var(--accent-color, #C9A96E);
+    }
+    .site-contact-icon { font-size: 28px; display: block; margin-bottom: 10px; }
+    .site-contact-item h4 {
+      font-family: 'Raleway', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-color, #C9A96E);
+      margin-bottom: 6px;
+    }
+    .site-contact-item p {
+      font-family: 'Raleway', sans-serif;
+      font-size: 12px;
+      color: #1B2A4A;
+      line-height: 1.5;
+    }
+
+    /* Site footer */
+    .site-footer {
+      background: var(--primary-color, #1B2A4A);
+      padding: 32px 40px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .site-footer-logo {
+      font-family: 'Dancing Script', cursive;
+      font-size: 22px;
+      color: #F8F5EF;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .site-footer p {
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      color: rgba(248,245,239,0.3);
+      letter-spacing: 1px;
+    }
+
+    /* ── CTA SECTION BELOW PREVIEW ── */
+    .preview-cta {
+      background: var(--black-mid);
+      border-top: 1px solid var(--grey);
+      padding: 56px 40px;
+      text-align: center;
+    }
+    .preview-cta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(6,214,160,0.12);
+      border: 1px solid var(--teal);
+      border-radius: 999px;
+      padding: 6px 18px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 24px;
+    }
+    .preview-cta h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .preview-cta h2 span { color: var(--pink); }
+    .preview-cta p {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.8;
+    }
+    .preview-cta-pricing {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+    .cta-price {
+      text-align: center;
+    }
+    .cta-price-num {
+      font-family: 'Fraunces', serif;
+      font-size: 64px;
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+    .cta-price-num sup {
+      font-size: 28px;
+      vertical-align: super;
+      color: var(--pink);
+    }
+    .cta-price-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 1px;
+    }
+    .cta-features {
+      list-style: none;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .cta-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+    }
+    .cta-features li::before {
+      content: '✓';
+      color: var(--teal);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .btn-launch {
+      background: linear-gradient(135deg, var(--pink), var(--yellow));
+      color: var(--black);
+      font-family: 'Fraunces', serif;
+      font-size: 18px;
+      font-weight: 900;
+      padding: 18px 52px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s;
+      letter-spacing: -0.5px;
+    }
+    .btn-launch:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(255,107,157,0.4); }
+    .preview-cta-note {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+      margin-top: 16px;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .preview-banner { padding: 10px 16px; }
+      .banner-text span { display: none; }
+      .preview-outer { padding: 16px; }
+      .site-hero { grid-template-columns: 1fr; }
+      .site-hero-image { display: none; }
+      .site-services-grid { grid-template-columns: 1fr; }
+      .site-about { grid-template-columns: 1fr; }
+      .site-about-image { height: 160px; }
+      .site-contact-grid { grid-template-columns: 1fr; }
+      .preview-cta { padding: 40px 20px; }
+      .preview-cta-pricing { flex-direction: column; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BANNER -->
+<div class="preview-banner">
+  <div class="banner-left">
+    <span class="banner-logo">InstaSite™</span>
+    <div class="banner-divider"></div>
+    <span class="banner-text">🎉 Your website is ready! <span>— Start your free trial to go live</span></span>
+  </div>
+  <div class="banner-right">
+    <a href="questionnaire.html" class="banner-edit">← Edit Details</a>
+    <a href="payment.html" class="banner-cta">Launch My Site — $29/mo 🚀</a>
+  </div>
+</div>
+
+<!-- DEVICE TOGGLE -->
+<div class="device-bar">
+  <button class="device-btn active" id="btn-desktop" onclick="setDevice('desktop')">🖥️ Desktop</button>
+  <button class="device-btn" id="btn-mobile" onclick="setDevice('mobile')">📱 Mobile</button>
+</div>
+
+<!-- PREVIEW FRAME -->
+<div class="preview-outer">
+  <div class="preview-frame-wrap" id="preview-frame">
+    <div class="site-wrap" id="generated-site">
+      <!-- Generated site injected by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- CTA BELOW PREVIEW -->
+<div class="preview-cta">
+  <div class="preview-cta-badge">✓ &nbsp; Your website is ready to go live!</div>
+  <h2>Love it? Let's<br><span>Launch It!</span></h2>
+  <p>Start your 7-day free trial and your website goes live today. No credit card required to start.</p>
+  <div class="preview-cta-pricing">
+    <div class="cta-price">
+      <div class="cta-price-num"><sup>$</sup>29</div>
+      <div class="cta-price-label">per month</div>
+    </div>
+    <ul class="cta-features">
+      <li>Everything you see — live today</li>
+      <li>Mobile responsive on all devices</li>
+      <li>Free hosting included forever</li>
+      <li>7-day free trial — no card needed</li>
+      <li>Cancel anytime</li>
+    </ul>
+  </div>
+  <a href="payment.html" class="btn-launch">✨ Launch My Website Free</a>
+  <p class="preview-cta-note">7-day free trial · No credit card required · Cancel anytime</p>
+</div>
+
+<script>
+  // ── READ URL PARAMS ──
+  var params = new URLSearchParams(window.location.search);
+
+  var data = {
+    name:      params.get('name')      || 'Your Business Name',
+    type:      params.get('type')      || 'bakery',
+    tagline:   params.get('tagline')   || 'Quality you can taste',
+    city:      params.get('city')      || 'Temecula',
+    state:     params.get('state')     || 'CA',
+    phone:     params.get('phone')     || '(555) 000-0000',
+    email:     params.get('email')     || 'hello@yourbusiness.com',
+    address:   params.get('address')   || '',
+    instagram: params.get('instagram') || '',
+    facebook:  params.get('facebook')  || '',
+    about:     params.get('about')     || 'We are passionate about what we do and committed to delivering the best experience for our customers.',
+    services:  (params.get('services') || '').split('|').filter(Boolean),
+    hours:     params.get('hours')     || 'Mon-Fri 9am-6pm',
+    color:     params.get('color')     || '#1B2A4A',
+    style:     params.get('style')     || 'elegant'
+  };
+
+  // Business type config
+  var bizConfig = {
+    bakery:     { icon: '🎂', label: 'Bakery & Food', heroIcon: '🍰', aboutIcon: '👩‍🍳', defaultServices: ['Custom Cakes','Cookies','Cupcakes'] },
+    salon:      { icon: '💇', label: 'Hair Salon',    heroIcon: '✂️', aboutIcon: '💅', defaultServices: ['Haircuts','Color','Styling'] },
+    contractor: { icon: '🔨', label: 'Contractor',    heroIcon: '🏠', aboutIcon: '🔧', defaultServices: ['Repairs','Remodeling','Installations'] },
+    fitness:    { icon: '💪', label: 'Fitness',       heroIcon: '🏋️', aboutIcon: '🧘', defaultServices: ['Personal Training','Group Classes','Nutrition'] },
+    medical:    { icon: '🏥', label: 'Medical',       heroIcon: '⚕️', aboutIcon: '👨‍⚕️', defaultServices: ['Consultations','Treatment','Follow-up Care'] },
+    retail:     { icon: '🛍️', label: 'Retail Shop',   heroIcon: '🛒', aboutIcon: '🏪', defaultServices: ['Products','Gift Cards','Custom Orders'] }
+  };
+
+  var biz = bizConfig[data.type] || bizConfig.bakery;
+  var services = data.services.length ? data.services : biz.defaultServices;
+
+  // Accent color based on primary
+  var accentMap = {
+    '#FF6B9D': '#C9A96E',
+    '#4A6FA5': '#FFD166',
+    '#06D6A0': '#1B2A4A',
+    '#FFD166': '#FF6B9D',
+    '#C9A96E': '#4A6FA5',
+    '#7B2D8B': '#FFD166',
+    '#E63946': '#FFD166',
+    '#2D6A4F': '#C9A96E',
+    '#F4A261': '#1B2A4A',
+    '#1B2A4A': '#C9A96E'
+  };
+  var accentColor = accentMap[data.color] || '#C9A96E';
+
+  // ── SERVICE CARDS HTML ──
+  var serviceIcons = ['⭐','🌟','✨','💎','🎯','🏆','💡','🔥'];
+  var serviceCardsHtml = services.slice(0, 6).map(function(s, i) {
+    return '<div class="site-service-card">' +
+      '<span class="site-service-icon">' + serviceIcons[i % serviceIcons.length] + '</span>' +
+      '<h3>' + s + '</h3>' +
+      '<p>Professional ' + s.toLowerCase() + ' tailored to your needs with attention to detail and quality craftsmanship.</p>' +
+    '</div>';
+  }).join('');
+
+  // ── MARQUEE TEXT ──
+  var marqueeText = services.slice(0, 4).join(' &nbsp;·&nbsp; ');
+  marqueeText = marqueeText + ' &nbsp;·&nbsp; ' + data.city + ', ' + data.state + ' &nbsp;·&nbsp; ' + biz.label;
+  marqueeText = marqueeText + ' &nbsp;&nbsp;&nbsp;&nbsp; ' + marqueeText;
+
+  // ── INJECT GENERATED SITE ──
+  document.getElementById('generated-site').innerHTML =
+    // Inject CSS variables
+    '<style>' +
+      ':root { --primary-color: ' + data.color + '; --accent-color: ' + accentColor + '; }' +
+      '@media (max-width: 700px) {' +
+        '.site-nav-links { display: none; }' +
+        '.site-hero { grid-template-columns: 1fr; padding: 40px 20px; }' +
+        '.site-hero-image { display: none; }' +
+        '.site-services-grid { grid-template-columns: 1fr; }' +
+        '.site-about { grid-template-columns: 1fr; }' +
+        '.site-about-image { height: 140px; }' +
+        '.site-contact-grid { grid-template-columns: 1fr; }' +
+      '}' +
+    '</style>' +
+
+    // Nav
+    '<nav class="site-nav">' +
+      '<span class="site-nav-logo">' + data.name + '</span>' +
+      '<ul class="site-nav-links">' +
+        '<li><a href="#">Home</a></li>' +
+        '<li><a href="#">Services</a></li>' +
+        '<li><a href="#">About</a></li>' +
+        '<li><a href="#">Contact</a></li>' +
+      '</ul>' +
+      '<button class="site-nav-btn">Contact Us</button>' +
+    '</nav>' +
+
+    // Hero
+    '<section class="site-hero">' +
+      '<div class="site-hero-text">' +
+        '<p class="site-hero-eyebrow">' + biz.label + ' &nbsp;·&nbsp; ' + data.city + ', ' + data.state + '</p>' +
+        '<h1>' + data.name + '<br><em>' + (data.tagline || 'Quality You Can Count On') + '</em></h1>' +
+        '<div class="site-hero-divider"></div>' +
+        '<p>' + data.about.substring(0, 140) + (data.about.length > 140 ? '...' : '') + '</p>' +
+        '<div class="site-hero-btns">' +
+          '<a href="#" class="site-btn-primary">Get in Touch</a>' +
+          '<a href="#" class="site-btn-outline">Our Services</a>' +
+        '</div>' +
+      '</div>' +
+      '<div class="site-hero-image">' + biz.heroIcon + '</div>' +
+    '</section>' +
+
+    // Marquee
+    '<div class="site-marquee"><div class="site-marquee-inner">' + marqueeText + '</div></div>' +
+
+    // Services
+    '<section class="site-services">' +
+      '<p class="site-section-label">What We Offer</p>' +
+      '<h2 class="site-section-title">Our <em>Services</em></h2>' +
+      '<div class="site-section-divider"></div>' +
+      '<div class="site-services-grid">' + serviceCardsHtml + '</div>' +
+    '</section>' +
+
+    // About
+    '<section class="site-about">' +
+      '<div class="site-about-image">' + biz.aboutIcon + '</div>' +
+      '<div class="site-about-text">' +
+        '<p class="site-section-label">Our Story</p>' +
+        '<h2>About <em>' + data.name + '</em></h2>' +
+        '<p>' + data.about + '</p>' +
+      '</div>' +
+    '</section>' +
+
+    // Contact
+    '<section class="site-contact">' +
+      '<p class="site-section-label">Get In Touch</p>' +
+      '<h2 class="site-section-title">Contact <em>Us</em></h2>' +
+      '<div class="site-section-divider"></div>' +
+      '<div class="site-contact-grid">' +
+        '<div class="site-contact-item"><span class="site-contact-icon">📞</span><h4>Phone</h4><p>' + data.phone + '</p></div>' +
+        '<div class="site-contact-item"><span class="site-contact-icon">✉️</span><h4>Email</h4><p>' + data.email + '</p></div>' +
+        '<div class="site-contact-item"><span class="site-contact-icon">⏰</span><h4>Hours</h4><p>' + (data.hours || 'Contact us for hours') + '</p></div>' +
+      '</div>' +
+    '</section>' +
+
+    // Footer
+    '<footer class="site-footer">' +
+      '<span class="site-footer-logo">' + data.name + '</span>' +
+      '<p>&copy; 2025 ' + data.name + ' &nbsp;·&nbsp; ' + data.city + ', ' + data.state + ' &nbsp;·&nbsp; Website by InstaSite™</p>' +
+    '</footer>';
+
+  // ── DEVICE TOGGLE ──
+  function setDevice(device) {
+    var frame   = document.getElementById('preview-frame');
+    var btnD    = document.getElementById('btn-desktop');
+    var btnM    = document.getElementById('btn-mobile');
+
+    if (device === 'mobile') {
+      frame.classList.add('mobile');
+      btnM.classList.add('active');
+      btnD.classList.remove('active');
+    } else {
+      frame.classList.remove('mobile');
+      btnD.classList.add('active');
+      btnM.classList.remove('active');
+    }
+  }
+</script>
+
+</body>
+</html>
