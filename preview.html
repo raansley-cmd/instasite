@@ -473,10 +473,10 @@
   var bgAlt    = mixWithWhite(bizTextColor, 0.11);  // slightly deeper for alternating sections
   var cardBg   = mixWithWhite(bizTextColor, 0.03);  // almost white but tinted
 
-  // Inject variables AND override every text color directly — no cascade ambiguity
-  var cssVars =
-    '<style>' +
-      '.g-wrap { --g-primary:' + bizColor + ';' +
+  // Inject CSS variables via a real style element — innerHTML strips <style> tags silently
+  var styleEl = document.createElement('style');
+  styleEl.textContent =
+    '.g-wrap { --g-primary:' + bizColor + ';' +
                ' --g-accent:'  + accentColor + ';' +
                ' --g-text:'    + bizTextColor + ';' +
                ' --g-text2:'   + bizTextColor2 + ';' +
@@ -486,14 +486,14 @@
                ' --g-bg:'      + bgMain + ';' +
                ' --g-bg-alt:'  + bgAlt + ';' +
                ' --g-card-bg:' + cardBg + '; }' +
-      // Force text colors with direct rules — belt AND suspenders
-      '.g-title, .g-card h3, .g-contact-card p { color:' + bizTextColor + ' !important; }' +
-      '.g-card p, .g-about-text p, .g-hero p { color:' + bizTextColor2 + ' !important; }' +
-      '.g-gallery-caption { color:' + bizTextColor2 + ' !important; border-color:' + bizTextColor2 + ' !important; background:' + cardBg + ' !important; }' +
-      '.g-services, .g-gallery, .g-contact { background:' + bgMain + '; }' +
-      '.g-gallery { background:' + bgAlt + '; }' +
-      '.g-card, .g-contact-card { background:' + cardBg + '; }' +
-    '</style>';
+    '.g-title, .g-card h3, .g-contact-card p { color:' + bizTextColor + ' !important; }' +
+    '.g-card p, .g-about-text p, .g-hero p { color:' + bizTextColor2 + ' !important; }' +
+    '.g-gallery-caption { color:' + bizTextColor2 + ' !important; border-color:' + bizTextColor2 + ' !important; background:' + cardBg + ' !important; }' +
+    '.g-services, .g-contact { background:' + bgMain + ' !important; }' +
+    '.g-gallery { background:' + bgAlt + ' !important; }' +
+    '.g-card, .g-contact-card { background:' + cardBg + ' !important; }';
+  document.head.appendChild(styleEl);
+  var cssVars = '';
 
   // ── LOGO HTML ──
   var logoHtml = logoSrc
