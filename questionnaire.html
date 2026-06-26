@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Build Your Website — InstaSite™</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black:      #0a0a0a;
+      --black-mid:  #111111;
+      --black-soft: #1a1a1a;
+      --grey:       #333333;
+      --grey-light: #555555;
+      --pink:       #FF6B9D;
+      --pink-dark:  #C94D7A;
+      --pink-light: #FFB6D4;
+      --yellow:     #FFD166;
+      --teal:       #06D6A0;
+      --white:      #ffffff;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--black);
+      border-bottom: 2px solid var(--grey);
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .nav-logo span { color: var(--pink); }
+    .nav-back {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--pink); }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap {
+      background: var(--black-mid);
+      border-bottom: 1px solid var(--grey);
+      padding: 20px 48px;
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .progress-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--pink);
+      letter-spacing: 0.5px;
+    }
+    .progress-count {
+      font-family: 'Fraunces', serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.35);
+    }
+    .progress-steps {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+    .progress-step-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--grey);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fraunces', serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.3);
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .progress-step-dot.active {
+      border-color: var(--pink);
+      background: var(--pink);
+      color: var(--white);
+    }
+    .progress-step-dot.done {
+      border-color: var(--teal);
+      background: var(--teal);
+      color: var(--black);
+    }
+    .progress-step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--grey);
+      transition: background 0.3s;
+    }
+    .progress-step-line.done { background: var(--teal); }
+    .progress-step-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      transition: color 0.3s;
+    }
+    .progress-step-name.active { color: var(--pink); }
+    .progress-step-name.done { color: var(--teal); }
+    .progress-bar-track {
+      width: 100%;
+      height: 4px;
+      background: var(--grey);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--pink), var(--yellow));
+      border-radius: 999px;
+      transition: width 0.5s ease;
+    }
+
+    /* ── MAIN CONTAINER ── */
+    .questionnaire-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    /* ── STEP PANEL ── */
+    .step-panel {
+      display: none;
+    }
+    .step-panel.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Step header */
+    .step-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 12px;
+    }
+    .step-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+    .step-title span { color: var(--pink); }
+    .step-title .yellow { color: var(--yellow); }
+    .step-title .teal { color: var(--teal); }
+    .step-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    /* ── FORM FIELDS ── */
+    .form-group {
+      margin-bottom: 24px;
+    }
+    .form-group label {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 8px;
+    }
+    .form-group label span { color: var(--pink); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: var(--black-soft);
+      border: 1px solid var(--grey);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--white);
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.2); }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--pink); }
+    .form-group input.error,
+    .form-group select.error { border-color: #FF4444; }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group select option { background: var(--black-soft); }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* Color picker */
+    .color-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .color-option {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .color-option.selected {
+      border-color: var(--white);
+      transform: scale(1.15);
+    }
+    .color-option.selected::after {
+      content: '✓';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    /* Style cards */
+    .style-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .style-option {
+      background: var(--black-soft);
+      border: 2px solid var(--grey);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .style-option:hover { border-color: var(--pink); }
+    .style-option.selected { border-color: var(--pink); background: rgba(255,107,157,0.08); }
+    .style-option-icon { font-size: 32px; display: block; margin-bottom: 8px; }
+    .style-option h4 {
+      font-family: 'Fraunces', serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .style-option p {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* Photo slot */
+    .photo-slot {
+      background: var(--black-soft);
+      border: 1px solid var(--grey);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .photo-slot-thumb {
+      width: 110px; height: 90px;
+      border-radius: 8px; overflow: hidden;
+      background: var(--grey); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; flex-shrink: 0;
+      border: 2px dashed var(--grey-light);
+      transition: border-color 0.2s;
+    }
+    .photo-slot-thumb:hover { border-color: var(--pink); }
+    .photo-slot-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .photo-slot-thumb input { display: none; }
+    .photo-slot-right { display: flex; flex-direction: column; gap: 10px; }
+    .photo-slot-name {
+      font-family: 'DM Sans', sans-serif; font-size: 11px;
+      font-weight: 600; color: var(--teal); letter-spacing: 0.5px;
+    }
+    .photo-slot-desc input {
+      width: 100%; background: var(--black); border: 1px solid var(--grey);
+      border-radius: 8px; padding: 10px 14px;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--white);
+      outline: none; transition: border-color 0.2s;
+    }
+    .photo-slot-desc input:focus { border-color: var(--pink); }
+    .photo-slot-desc input::placeholder { color: rgba(255,255,255,0.2); }
+    .photo-slot-remove {
+      background: none; border: none; color: rgba(255,255,255,0.25);
+      font-size: 18px; cursor: pointer; padding: 0; align-self: flex-end;
+      transition: color 0.2s;
+    }
+    .photo-slot-remove:hover { color: #ff4444; }
+
+    /* Upload box */
+    .upload-box {
+      background: var(--black-soft);
+      border: 2px dashed var(--grey);
+      border-radius: 12px;
+      padding: 40px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .upload-box:hover { border-color: var(--pink); }
+    .upload-box input[type="file"] { display: none; }
+    .upload-icon { font-size: 36px; display: block; margin-bottom: 12px; }
+    .upload-box h4 {
+      font-family: 'Fraunces', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+    .upload-box p {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+    }
+    .upload-box .upload-btn {
+      display: inline-block;
+      margin-top: 16px;
+      background: var(--grey);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .upload-box:hover .upload-btn { background: var(--pink); }
+    .upload-preview {
+      display: none;
+      margin-top: 12px;
+    }
+    .upload-preview img {
+      max-height: 120px;
+      border-radius: 8px;
+      border: 2px solid var(--pink);
+    }
+    .upload-preview p {
+      font-size: 12px;
+      color: var(--teal);
+      margin-top: 8px;
+    }
+
+    /* Services tags */
+    .services-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .service-tag {
+      background: rgba(255,107,157,0.15);
+      border: 1px solid var(--pink);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--pink);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .service-tag-remove {
+      cursor: pointer;
+      color: var(--pink);
+      font-size: 16px;
+      line-height: 1;
+      opacity: 0.7;
+    }
+    .service-tag-remove:hover { opacity: 1; }
+    .service-input-wrap {
+      display: flex;
+      gap: 10px;
+    }
+    .service-input-wrap input {
+      flex: 1;
+    }
+    .btn-add-service {
+      background: var(--pink);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 14px 20px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .btn-add-service:hover { background: var(--pink-dark); }
+
+    /* ── STEP 5 SUMMARY ── */
+    .summary-card {
+      background: var(--black-soft);
+      border: 1px solid var(--grey);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .summary-card h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 16px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--grey);
+      gap: 16px;
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-key {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      flex-shrink: 0;
+      min-width: 120px;
+    }
+    .summary-val {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--white);
+      text-align: right;
+    }
+
+    /* ── NAV BUTTONS ── */
+    .step-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--grey);
+    }
+    .btn-back {
+      background: transparent;
+      color: rgba(255,255,255,0.5);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 999px;
+      border: 2px solid var(--grey);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-back:hover { border-color: var(--grey-light); color: var(--white); }
+    .btn-next {
+      background: var(--pink);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 14px 36px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      justify-content: center;
+      max-width: 300px;
+      margin-left: auto;
+    }
+    .btn-next:hover { background: var(--pink-dark); transform: translateY(-2px); }
+    .btn-generate {
+      background: linear-gradient(135deg, var(--pink), var(--yellow));
+      color: var(--black);
+      font-family: 'Fraunces', serif;
+      font-size: 17px;
+      font-weight: 900;
+      padding: 18px 40px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      justify-content: center;
+      max-width: 340px;
+      margin-left: auto;
+      letter-spacing: -0.5px;
+    }
+    .btn-generate:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255,107,157,0.35); }
+
+    /* ── GENERATING OVERLAY ── */
+    .generating-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px;
+    }
+    .generating-overlay.show { display: flex; }
+    .generating-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 48px;
+      letter-spacing: -0.5px;
+    }
+    .generating-logo span { color: var(--pink); }
+    .generating-spinner {
+      width: 72px; height: 72px;
+      border: 4px solid var(--grey);
+      border-top-color: var(--pink);
+      border-right-color: var(--yellow);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 32px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .generating-title {
+      font-family: 'Fraunces', serif;
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .generating-title span { color: var(--pink); }
+    .generating-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: rgba(255,255,255,0.45);
+      max-width: 400px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+    .generating-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+      max-width: 320px;
+    }
+    .gen-step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: rgba(255,255,255,0.3);
+      transition: color 0.3s;
+    }
+    .gen-step.done { color: var(--teal); }
+    .gen-step.active { color: var(--white); }
+    .gen-step-icon {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .gen-step.done .gen-step-icon { border-color: var(--teal); background: var(--teal); color: var(--black); }
+    .gen-step.active .gen-step-icon { border-color: var(--pink); background: var(--pink); color: var(--white); }
+
+    /* Mobile */
+    @media (max-width: 700px) {
+      nav { padding: 0 16px; }
+      .progress-wrap { padding: 16px; }
+      .progress-step-name { display: none; }
+      .questionnaire-wrap { padding: 36px 16px 60px; }
+      .form-row { grid-template-columns: 1fr; }
+      .style-options { grid-template-columns: 1fr; }
+      .step-buttons { flex-wrap: wrap; }
+      .btn-next, .btn-generate { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">InstaSite<span>™</span></a>
+  <a class="nav-back" href="index.html">← Back to Home</a>
+</nav>
+
+<!-- PROGRESS BAR -->
+<div class="progress-wrap">
+  <div class="progress-header">
+    <span class="progress-label" id="progress-label">Step 1 of 5 — Business Basics</span>
+    <span class="progress-count" id="progress-count">20% Complete</span>
+  </div>
+  <div class="progress-steps">
+    <div class="progress-step">
+      <div class="progress-step-dot active" id="dot-1">1</div>
+      <div class="progress-step-line" id="line-1"></div>
+      <span class="progress-step-name active" id="name-1">Basics</span>
+    </div>
+    <div class="progress-step">
+      <div class="progress-step-dot" id="dot-2">2</div>
+      <div class="progress-step-line" id="line-2"></div>
+      <span class="progress-step-name" id="name-2">Contact</span>
+    </div>
+    <div class="progress-step">
+      <div class="progress-step-dot" id="dot-3">3</div>
+      <div class="progress-step-line" id="line-3"></div>
+      <span class="progress-step-name" id="name-3">Style</span>
+    </div>
+    <div class="progress-step">
+      <div class="progress-step-dot" id="dot-4">4</div>
+      <div class="progress-step-line" id="line-4"></div>
+      <span class="progress-step-name" id="name-4">Content</span>
+    </div>
+    <div class="progress-step">
+      <div class="progress-step-dot" id="dot-5">5</div>
+      <span class="progress-step-name" id="name-5">Review</span>
+    </div>
+  </div>
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" id="progress-fill" style="width:20%"></div>
+  </div>
+</div>
+
+<!-- QUESTIONNAIRE -->
+<div class="questionnaire-wrap">
+
+  <!-- STEP 1: BUSINESS BASICS -->
+  <div class="step-panel active" id="step-1">
+    <p class="step-eyebrow">Step 1 of 5</p>
+    <h2 class="step-title">Tell us about<br>your <span>business</span></h2>
+    <p class="step-sub">This is how we'll personalize your website — just a few basics to get started.</p>
+
+    <div class="form-group">
+      <label>Business Name <span>*</span></label>
+      <input type="text" id="biz-name" placeholder="e.g. Sarah's Sweet Bakery">
+    </div>
+
+    <div class="form-group">
+      <label>Business Type <span>*</span></label>
+      <select id="biz-type">
+        <option value="" disabled selected>Select your business type</option>
+        <option value="bakery">🎂 Bakery & Food Business</option>
+        <option value="salon">💇 Hair Salon & Beauty</option>
+        <option value="contractor">🔨 Contractor & Handyman</option>
+        <option value="fitness">💪 Fitness & Personal Training</option>
+        <option value="medical">🏥 Medical & Dental</option>
+        <option value="retail">🛍️ Retail Shop</option>
+        <option value="photography">📸 Photography & Videography</option>
+        <option value="cleaning">🧹 Cleaning Services</option>
+        <option value="petcare">🐾 Pet Grooming & Care</option>
+        <option value="catering">🍽️ Catering & Event Food</option>
+        <option value="tutoring">📚 Tutoring & Education</option>
+        <option value="realestate">🏡 Real Estate</option>
+        <option value="landscaping">🌿 Landscaping & Lawn Care</option>
+        <option value="automotive">🚗 Automotive & Auto Repair</option>
+        <option value="spa">💆 Spa & Wellness</option>
+        <option value="legal">⚖️ Legal Services</option>
+        <option value="accounting">💼 Accounting & Finance</option>
+        <option value="childcare">👶 Childcare & Daycare</option>
+        <option value="restaurant">🍴 Restaurant & Cafe</option>
+        <option value="other">✨ Other Business</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Tagline or Slogan</label>
+      <input type="text" id="biz-tagline" placeholder="e.g. Baked with love, delivered with joy">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>City <span>*</span></label>
+        <input type="text" id="biz-city" placeholder="e.g. Temecula">
+      </div>
+      <div class="form-group">
+        <label>State <span>*</span></label>
+        <select id="biz-state">
+          <option value="">Select State</option>
+          <option value="AL">Alabama</option>
+          <option value="AK">Alaska</option>
+          <option value="AZ">Arizona</option>
+          <option value="AR">Arkansas</option>
+          <option value="CA" selected>California</option>
+          <option value="CO">Colorado</option>
+          <option value="CT">Connecticut</option>
+          <option value="DE">Delaware</option>
+          <option value="FL">Florida</option>
+          <option value="GA">Georgia</option>
+          <option value="HI">Hawaii</option>
+          <option value="ID">Idaho</option>
+          <option value="IL">Illinois</option>
+          <option value="IN">Indiana</option>
+          <option value="IA">Iowa</option>
+          <option value="KS">Kansas</option>
+          <option value="KY">Kentucky</option>
+          <option value="LA">Louisiana</option>
+          <option value="ME">Maine</option>
+          <option value="MD">Maryland</option>
+          <option value="MA">Massachusetts</option>
+          <option value="MI">Michigan</option>
+          <option value="MN">Minnesota</option>
+          <option value="MS">Mississippi</option>
+          <option value="MO">Missouri</option>
+          <option value="MT">Montana</option>
+          <option value="NE">Nebraska</option>
+          <option value="NV">Nevada</option>
+          <option value="NH">New Hampshire</option>
+          <option value="NJ">New Jersey</option>
+          <option value="NM">New Mexico</option>
+          <option value="NY">New York</option>
+          <option value="NC">North Carolina</option>
+          <option value="ND">North Dakota</option>
+          <option value="OH">Ohio</option>
+          <option value="OK">Oklahoma</option>
+          <option value="OR">Oregon</option>
+          <option value="PA">Pennsylvania</option>
+          <option value="RI">Rhode Island</option>
+          <option value="SC">South Carolina</option>
+          <option value="SD">South Dakota</option>
+          <option value="TN">Tennessee</option>
+          <option value="TX">Texas</option>
+          <option value="UT">Utah</option>
+          <option value="VT">Vermont</option>
+          <option value="VA">Virginia</option>
+          <option value="WA">Washington</option>
+          <option value="WV">West Virginia</option>
+          <option value="WI">Wisconsin</option>
+          <option value="WY">Wyoming</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="step-buttons">
+      <button class="btn-next" onclick="goToStep(2)">Next — Contact Info &nbsp; →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: CONTACT INFO -->
+  <div class="step-panel" id="step-2">
+    <p class="step-eyebrow">Step 2 of 5</p>
+    <h2 class="step-title">How can customers<br><span class="yellow">reach you?</span></h2>
+    <p class="step-sub">This information will appear on your website so customers can contact you easily.</p>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Phone Number <span>*</span></label>
+        <input type="tel" id="biz-phone" placeholder="(555) 000-0000" maxlength="14" oninput="formatPhone(this)">
+      </div>
+      <div class="form-group">
+        <label>Email Address <span>*</span></label>
+        <input type="email" id="biz-email" placeholder="hello@yourbusiness.com">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Business Address</label>
+      <input type="text" id="biz-address" placeholder="123 Main St, Temecula, CA 92592">
+    </div>
+
+    <div class="form-group">
+      <label>Website (if you have one)</label>
+      <input type="url" id="biz-website" placeholder="https://yourbusiness.com">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Instagram</label>
+        <input type="text" id="biz-instagram" placeholder="@yourbusiness">
+      </div>
+      <div class="form-group">
+        <label>Facebook</label>
+        <input type="text" id="biz-facebook" placeholder="facebook.com/yourbusiness">
+      </div>
+    </div>
+
+    <div class="step-buttons">
+      <button class="btn-back" onclick="goToStep(1)">← Back</button>
+      <button class="btn-next" onclick="goToStep(3)">Next — Brand & Style &nbsp; →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: BRAND & STYLE -->
+  <div class="step-panel" id="step-3">
+    <p class="step-eyebrow">Step 3 of 5</p>
+    <h2 class="step-title">Make it<br><span class="teal">yours</span></h2>
+    <p class="step-sub">Choose your colors and style — we'll design your website to match your brand perfectly.</p>
+
+    <div class="form-group">
+      <label>Pick Your Primary Color <span>*</span></label>
+      <div class="color-options" id="color-options">
+        <div class="color-option selected" style="background:#FF6B9D;" data-color="#FF6B9D" data-name="Hot Pink" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#E91E8C;" data-color="#E91E8C" data-name="Deep Pink" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#FF4757;" data-color="#FF4757" data-name="Red" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#FF6348;" data-color="#FF6348" data-name="Coral" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#F4A261;" data-color="#F4A261" data-name="Orange" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#FFD166;" data-color="#FFD166" data-name="Yellow" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#C9A96E;" data-color="#C9A96E" data-name="Warm Gold" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#B8860B;" data-color="#B8860B" data-name="Dark Gold" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#06D6A0;" data-color="#06D6A0" data-name="Teal" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#2D6A4F;" data-color="#2D6A4F" data-name="Forest Green" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#52B788;" data-color="#52B788" data-name="Sage Green" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#4A90D9;" data-color="#4A90D9" data-name="Sky Blue" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#4A6FA5;" data-color="#4A6FA5" data-name="Navy Blue" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#1B2A4A;" data-color="#1B2A4A" data-name="Dark Navy" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#7B2D8B;" data-color="#7B2D8B" data-name="Purple" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#9B59B6;" data-color="#9B59B6" data-name="Lavender" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#8B4513;" data-color="#8B4513" data-name="Brown" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#2C2C2C;" data-color="#2C2C2C" data-name="Charcoal" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#5C5C5C;" data-color="#5C5C5C" data-name="Dark Grey" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#1a1a1a;" data-color="#1a1a1a" data-name="Black" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#F8F5EF;border:2px solid #555;" data-color="#F8F5EF" data-name="Cream" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#FFFDE7;border:2px solid #555;" data-color="#FFFDE7" data-name="Ivory" onclick="selectColor(this)"></div>
+        <div class="color-option" style="background:#FDF6EC;border:2px solid #555;" data-color="#FDF6EC" data-name="Warm White" onclick="selectColor(this)"></div>
+      </div>
+      <p style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:10px;" id="selected-color-name">Selected: Hot Pink</p>
+    </div>
+
+    <div class="form-group">
+      <label>Primary Text Color <span>*</span></label>
+      <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:12px;">Used for headings and important titles — choose something bold and readable.</p>
+      <div class="color-options" id="primary-text-color-options">
+        <!-- Lights / Neutrals -->
+        <div class="color-option" style="background:#ffffff;border:2px solid #555;" data-color="#ffffff" data-name="White" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#F8F5EF;" data-color="#F8F5EF" data-name="Cream" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#F5F0E8;" data-color="#F5F0E8" data-name="Warm White" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#E8E8E8;" data-color="#E8E8E8" data-name="Light Grey" onclick="selectPrimaryTextColor(this)"></div>
+        <!-- Darks -->
+        <div class="color-option" style="background:#1a1a1a;" data-color="#1a1a1a" data-name="Black" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#2C2C2C;" data-color="#2C2C2C" data-name="Charcoal" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#3D3D3D;" data-color="#3D3D3D" data-name="Dark Grey" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#4A4A4A;" data-color="#4A4A4A" data-name="Medium Grey" onclick="selectPrimaryTextColor(this)"></div>
+        <!-- Blues / Navies -->
+        <div class="color-option selected" style="background:#1B2A4A;" data-color="#1B2A4A" data-name="Dark Navy" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#0D1B2A;" data-color="#0D1B2A" data-name="Deep Navy" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#2E4057;" data-color="#2E4057" data-name="Steel Blue" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#4A6FA5;" data-color="#4A6FA5" data-name="Navy Blue" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#1A3A5C;" data-color="#1A3A5C" data-name="Ocean Blue" onclick="selectPrimaryTextColor(this)"></div>
+        <!-- Browns / Warms -->
+        <div class="color-option" style="background:#4A3728;" data-color="#4A3728" data-name="Dark Brown" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#6B4F3A;" data-color="#6B4F3A" data-name="Warm Brown" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#8B6914;" data-color="#8B6914" data-name="Dark Gold" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#5C3D1E;" data-color="#5C3D1E" data-name="Espresso" onclick="selectPrimaryTextColor(this)"></div>
+        <!-- Greens -->
+        <div class="color-option" style="background:#2D6A4F;" data-color="#2D6A4F" data-name="Forest Green" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#1B4332;" data-color="#1B4332" data-name="Deep Green" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#3A5A40;" data-color="#3A5A40" data-name="Hunter Green" onclick="selectPrimaryTextColor(this)"></div>
+        <!-- Purples -->
+        <div class="color-option" style="background:#4A235A;" data-color="#4A235A" data-name="Deep Purple" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#6B3FA0;" data-color="#6B3FA0" data-name="Purple" onclick="selectPrimaryTextColor(this)"></div>
+        <!-- Reds / Pinks -->
+        <div class="color-option" style="background:#7B1C2E;" data-color="#7B1C2E" data-name="Deep Red" onclick="selectPrimaryTextColor(this)"></div>
+        <div class="color-option" style="background:#C94D7A;" data-color="#C94D7A" data-name="Dark Pink" onclick="selectPrimaryTextColor(this)"></div>
+      </div>
+      <p style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:10px;" id="selected-primary-text-color-name">Selected: Dark Navy</p>
+    </div>
+
+    <div class="form-group">
+      <label>Secondary Text Color <span>*</span></label>
+      <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:12px;">Used for body copy, descriptions, and supporting text. Often a lighter or softer version of your primary text color.</p>
+      <div class="color-options" id="secondary-text-color-options">
+        <!-- Lights / Neutrals -->
+        <div class="color-option" style="background:#ffffff;border:2px solid #555;" data-color="#ffffff" data-name="White" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#F8F5EF;" data-color="#F8F5EF" data-name="Cream" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#E8E0D0;" data-color="#E8E0D0" data-name="Warm Cream" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#D4CFC8;" data-color="#D4CFC8" data-name="Linen" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#C0BAB2;" data-color="#C0BAB2" data-name="Stone" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#E8E8E8;" data-color="#E8E8E8" data-name="Light Grey" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#B0B0B0;" data-color="#B0B0B0" data-name="Silver" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#888888;" data-color="#888888" data-name="Medium Grey" onclick="selectSecondaryTextColor(this)"></div>
+        <!-- Darks -->
+        <div class="color-option" style="background:#555555;" data-color="#555555" data-name="Dark Grey" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#444444;" data-color="#444444" data-name="Charcoal" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#333333;" data-color="#333333" data-name="Near Black" onclick="selectSecondaryTextColor(this)"></div>
+        <!-- Blues -->
+        <div class="color-option selected" style="background:#4A6FA5;" data-color="#4A6FA5" data-name="Navy Blue" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#6B8CBE;" data-color="#6B8CBE" data-name="Slate Blue" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#5B7FA6;" data-color="#5B7FA6" data-name="Dusty Blue" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#7B9EBE;" data-color="#7B9EBE" data-name="Sky Steel" onclick="selectSecondaryTextColor(this)"></div>
+        <!-- Browns / Warms -->
+        <div class="color-option" style="background:#8B7355;" data-color="#8B7355" data-name="Warm Tan" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#A0856C;" data-color="#A0856C" data-name="Camel" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#C9A96E;" data-color="#C9A96E" data-name="Warm Gold" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#B8860B;" data-color="#B8860B" data-name="Dark Gold" onclick="selectSecondaryTextColor(this)"></div>
+        <!-- Greens -->
+        <div class="color-option" style="background:#52B788;" data-color="#52B788" data-name="Sage Green" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#74A57F;" data-color="#74A57F" data-name="Muted Green" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#8FAF8F;" data-color="#8FAF8F" data-name="Soft Green" onclick="selectSecondaryTextColor(this)"></div>
+        <!-- Purples / Pinks -->
+        <div class="color-option" style="background:#9B7FC7;" data-color="#9B7FC7" data-name="Soft Purple" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#BFA8D9;" data-color="#BFA8D9" data-name="Lavender" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#D4A5BD;" data-color="#D4A5BD" data-name="Dusty Rose" onclick="selectSecondaryTextColor(this)"></div>
+        <div class="color-option" style="background:#FFB6D4;" data-color="#FFB6D4" data-name="Pink Light" onclick="selectSecondaryTextColor(this)"></div>
+      </div>
+      <p style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:10px;" id="selected-secondary-text-color-name">Selected: Navy Blue</p>
+    </div>
+
+    <div class="form-group">
+      <label>Website Style <span>*</span></label>
+      <div class="style-options">
+        <div class="style-option selected" data-style="modern" onclick="selectStyle(this)">
+          <span class="style-option-icon">⚡</span>
+          <h4>Modern & Bold</h4>
+          <p>Clean lines, strong typography, high contrast</p>
+        </div>
+        <div class="style-option" data-style="elegant" onclick="selectStyle(this)">
+          <span class="style-option-icon">✨</span>
+          <h4>Elegant & Refined</h4>
+          <p>Sophisticated, premium, serif fonts</p>
+        </div>
+        <div class="style-option" data-style="friendly" onclick="selectStyle(this)">
+          <span class="style-option-icon">😊</span>
+          <h4>Friendly & Warm</h4>
+          <p>Approachable, colorful, welcoming feel</p>
+        </div>
+        <div class="style-option" data-style="minimal" onclick="selectStyle(this)">
+          <span class="style-option-icon">◻️</span>
+          <h4>Clean & Minimal</h4>
+          <p>Simple, lots of white space, understated</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Upload Your Logo <span style="font-size:13px;font-weight:400;color:var(--teal);letter-spacing:0;">— Optional</span></label>
+      <p style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:6px;">✨ A logo is a wonderful addition but is <span style="color:var(--teal);">NOT required</span> to generate your website!</p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:14px;">If you skip this, your business name will appear in the header instead. You can always add a logo later.</p>
+      <div class="upload-box" onclick="document.getElementById('logo-upload').click()">
+        <input type="file" id="logo-upload" accept="image/*" onchange="previewUpload(this,'logo-preview')">
+        <span class="upload-icon">🖼️</span>
+        <h4>Upload Your Logo</h4>
+        <p>PNG or JPG — transparent background preferred</p>
+        <span class="upload-btn">Choose File</span>
+        <div class="upload-preview" id="logo-preview">
+          <img id="logo-preview-img" src="" alt="Logo preview">
+          <p>✓ Logo uploaded!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-buttons">
+      <button class="btn-back" onclick="goToStep(2)">← Back</button>
+      <button class="btn-next" onclick="goToStep(4)">Next — Your Content &nbsp; →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: CONTENT -->
+  <div class="step-panel" id="step-4">
+    <p class="step-eyebrow">Step 4 of 5</p>
+    <h2 class="step-title">Tell your<br><span>story</span></h2>
+    <p class="step-sub">Help us write your website content — the more you share, the better your site will look.</p>
+
+    <div class="form-group">
+      <label>About Your Business <span>*</span></label>
+      <textarea id="biz-about" placeholder="Tell us about your business — when you started, what makes you special, why customers love you..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Your Services or Products <span>*</span></label>
+      <div class="services-tags" id="services-tags"></div>
+      <div class="service-input-wrap">
+        <input type="text" id="service-input" placeholder="e.g. Custom Birthday Cakes" onkeypress="if(event.key==='Enter'){addService();event.preventDefault();}">
+        <button class="btn-add-service" onclick="addService()">+ Add</button>
+      </div>
+      <p style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:8px;">Press Enter or click Add after each service</p>
+    </div>
+
+    <div class="form-group">
+      <label>Upload Your Photos <span style="color:rgba(255,255,255,0.35);font-weight:400;text-transform:none;letter-spacing:0;">(up to 5 — one at a time)</span></label>
+      <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:16px;">Upload each photo individually and add a short description. These will appear in your website gallery.</p>
+      <div id="photo-slots">
+        <!-- slots injected by JS -->
+      </div>
+      <button type="button" class="btn-add-service" id="add-photo-btn" onclick="addPhotoSlot()" style="margin-top:12px;width:100%;border-radius:12px;">+ Add Another Photo</button>
+    </div>
+
+    <div class="form-group">
+      <label>Business Hours</label>
+      <input type="text" id="biz-hours" placeholder="e.g. Mon-Fri 9am-6pm, Sat 10am-4pm">
+    </div>
+
+    <div class="step-buttons">
+      <button class="btn-back" onclick="goToStep(3)">← Back</button>
+      <button class="btn-next" onclick="goToStep(5)">Next — Review &nbsp; →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: REVIEW & GENERATE -->
+  <div class="step-panel" id="step-5">
+    <p class="step-eyebrow">Step 5 of 5</p>
+    <h2 class="step-title">Looking <span class="yellow">great!</span><br>Ready to generate?</h2>
+    <p class="step-sub">Review your details below — then hit the button and watch InstaSite™ build your website in seconds!</p>
+
+    <div class="summary-card">
+      <h3>Business Details</h3>
+      <div class="summary-row">
+        <span class="summary-key">Business Name</span>
+        <span class="summary-val" id="sum-name">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">Business Type</span>
+        <span class="summary-val" id="sum-type">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">Tagline</span>
+        <span class="summary-val" id="sum-tagline">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">Location</span>
+        <span class="summary-val" id="sum-location">—</span>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <h3>Contact & Style</h3>
+      <div class="summary-row">
+        <span class="summary-key">Phone</span>
+        <span class="summary-val" id="sum-phone">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">Email</span>
+        <span class="summary-val" id="sum-email">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">Primary Color</span>
+        <span class="summary-val" id="sum-color">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">Style</span>
+        <span class="summary-val" id="sum-style">—</span>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <h3>Content</h3>
+      <div class="summary-row">
+        <span class="summary-key">Services</span>
+        <span class="summary-val" id="sum-services">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-key">Hours</span>
+        <span class="summary-val" id="sum-hours">—</span>
+      </div>
+    </div>
+
+    <div class="step-buttons">
+      <button class="btn-back" onclick="goToStep(4)">← Back</button>
+      <button class="btn-generate" onclick="generateWebsite()">✨ Generate My Website!</button>
+    </div>
+  </div>
+
+</div><!-- end questionnaire-wrap -->
+
+<!-- GENERATING OVERLAY -->
+<div class="generating-overlay" id="generating-overlay">
+  <div class="generating-logo">InstaSite<span>™</span></div>
+  <div class="generating-spinner"></div>
+  <h2 class="generating-title">Building your <span>website</span>...</h2>
+  <p class="generating-sub">Hold tight! We're creating a beautiful custom website for your business right now.</p>
+  <div class="generating-steps">
+    <div class="gen-step active" id="gen-1">
+      <div class="gen-step-icon">1</div>
+      Analyzing your business type
+    </div>
+    <div class="gen-step" id="gen-2">
+      <div class="gen-step-icon">2</div>
+      Applying your brand colors & style
+    </div>
+    <div class="gen-step" id="gen-3">
+      <div class="gen-step-icon">3</div>
+      Writing your website content
+    </div>
+    <div class="gen-step" id="gen-4">
+      <div class="gen-step-icon">4</div>
+      Building your pages
+    </div>
+    <div class="gen-step" id="gen-5">
+      <div class="gen-step-icon">5</div>
+      Final touches & mobile optimization
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── STATE ──
+  var currentStep = 1;
+  var totalSteps  = 5;
+  var services    = [];
+  var selectedColor = '#FF6B9D';
+  var selectedColorName = 'Hot Pink';
+  var selectedPrimaryTextColor = '#1B2A4A';
+  var selectedPrimaryTextColorName = 'Dark Navy';
+  var selectedSecondaryTextColor = '#4A6FA5';
+  var selectedSecondaryTextColorName = 'Navy Blue';
+  var selectedStyle = 'modern';
+
+  var stepNames = [
+    'Business Basics',
+    'Contact Info',
+    'Brand & Style',
+    'Your Content',
+    'Review & Generate'
+  ];
+
+  var styleNames = {
+    modern: 'Modern & Bold',
+    elegant: 'Elegant & Refined',
+    friendly: 'Friendly & Warm',
+    minimal: 'Clean & Minimal'
+  };
+
+  var bizTypeNames = {
+    bakery: '🎂 Bakery & Food Business',
+    salon: '💇 Hair Salon & Beauty',
+    contractor: '🔨 Contractor & Handyman',
+    fitness: '💪 Fitness & Personal Training',
+    medical: '🏥 Medical & Dental',
+    retail: '🛍️ Retail Shop'
+  };
+
+  // ── STEP NAVIGATION ──
+  function goToStep(step) {
+    // Validate current step
+    if (step > currentStep && !validateStep(currentStep)) return;
+
+    // Hide current
+    document.getElementById('step-' + currentStep).classList.remove('active');
+
+    // Update dots and lines
+    for (var i = 1; i <= totalSteps; i++) {
+      var dot  = document.getElementById('dot-' + i);
+      var name = document.getElementById('name-' + i);
+      var line = document.getElementById('line-' + i);
+
+      dot.classList.remove('active', 'done');
+      name.classList.remove('active', 'done');
+      if (line) line.classList.remove('done');
+
+      if (i < step) {
+        dot.classList.add('done');
+        dot.innerHTML = '✓';
+        name.classList.add('done');
+        if (line) line.classList.add('done');
+      } else if (i === step) {
+        dot.classList.add('active');
+        dot.innerHTML = i;
+        name.classList.add('active');
+      } else {
+        dot.innerHTML = i;
+      }
+    }
+
+    // Update progress bar and label
+    var pct = Math.round((step / totalSteps) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = 'Step ' + step + ' of ' + totalSteps + ' — ' + stepNames[step - 1];
+    document.getElementById('progress-count').textContent = pct + '% Complete';
+
+    // If going to step 5, populate summary
+    if (step === 5) populateSummary();
+
+    currentStep = step;
+    document.getElementById('step-' + step).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── VALIDATION ──
+  function validateStep(step) {
+    var valid = true;
+
+    if (step === 1) {
+      var name  = document.getElementById('biz-name');
+      var type  = document.getElementById('biz-type');
+      var city  = document.getElementById('biz-city');
+      var state = document.getElementById('biz-state');
+      [name, type, city, state].forEach(function(el) {
+        el.classList.remove('error');
+        if (!el.value.trim()) { el.classList.add('error'); valid = false; }
+      });
+    }
+
+    if (step === 2) {
+      var phone = document.getElementById('biz-phone');
+      var email = document.getElementById('biz-email');
+      [phone, email].forEach(function(el) {
+        el.classList.remove('error');
+        if (!el.value.trim()) { el.classList.add('error'); valid = false; }
+      });
+    }
+
+    if (step === 4) {
+      var about = document.getElementById('biz-about');
+      about.classList.remove('error');
+      if (!about.value.trim()) { about.classList.add('error'); valid = false; }
+      if (services.length === 0) {
+        document.getElementById('service-input').classList.add('error');
+        valid = false;
+      }
+    }
+
+    if (!valid) {
+      var firstError = document.querySelector('.error');
+      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return valid;
+  }
+
+  // ── COLOR SELECTION ──
+  function selectColor(el) {
+    document.querySelectorAll('#color-options .color-option').forEach(function(c) { c.classList.remove('selected'); });
+    el.classList.add('selected');
+    selectedColor = el.getAttribute('data-color');
+    selectedColorName = el.getAttribute('data-name');
+    document.getElementById('selected-color-name').textContent = 'Selected: ' + selectedColorName;
+  }
+
+  function selectPrimaryTextColor(el) {
+    document.querySelectorAll('#primary-text-color-options .color-option').forEach(function(c) { c.classList.remove('selected'); });
+    el.classList.add('selected');
+    selectedPrimaryTextColor = el.getAttribute('data-color');
+    selectedPrimaryTextColorName = el.getAttribute('data-name');
+    document.getElementById('selected-primary-text-color-name').textContent = 'Selected: ' + selectedPrimaryTextColorName;
+  }
+
+  function selectSecondaryTextColor(el) {
+    document.querySelectorAll('#secondary-text-color-options .color-option').forEach(function(c) { c.classList.remove('selected'); });
+    el.classList.add('selected');
+    selectedSecondaryTextColor = el.getAttribute('data-color');
+    selectedSecondaryTextColorName = el.getAttribute('data-name');
+    document.getElementById('selected-secondary-text-color-name').textContent = 'Selected: ' + selectedSecondaryTextColorName;
+  }
+
+  // ── STYLE SELECTION ──
+  function selectStyle(el) {
+    document.querySelectorAll('.style-option').forEach(function(s) { s.classList.remove('selected'); });
+    el.classList.add('selected');
+    selectedStyle = el.getAttribute('data-style');
+  }
+
+  // ── SERVICES ──
+  function addService() {
+    var input = document.getElementById('service-input');
+    var val   = input.value.trim();
+    if (!val) return;
+    input.classList.remove('error');
+    services.push(val);
+    renderServices();
+    input.value = '';
+    input.focus();
+  }
+
+  function removeService(idx) {
+    services.splice(idx, 1);
+    renderServices();
+  }
+
+  function renderServices() {
+    var container = document.getElementById('services-tags');
+    container.innerHTML = '';
+    services.forEach(function(s, i) {
+      var tag = document.createElement('div');
+      tag.className = 'service-tag';
+      tag.innerHTML = s + '<span class="service-tag-remove" onclick="removeService(' + i + ')">×</span>';
+      container.appendChild(tag);
+    });
+  }
+
+  // ── FILE UPLOADS ──
+  function previewUpload(input, previewId) {
+    if (!input.files || !input.files[0]) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var preview = document.getElementById(previewId);
+      var img     = document.getElementById(previewId + '-img');
+      if (img) img.src = e.target.result;
+      preview.style.display = 'block';
+      // Save to localStorage for preview page
+      try { localStorage.setItem('instasite_logo', e.target.result); } catch(err) {}
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+
+  // ── PHOTO SLOTS ──
+  var photoSlots = []; // [{src, desc}]
+
+  function addPhotoSlot() {
+    if (photoSlots.length >= 5) {
+      document.getElementById('add-photo-btn').textContent = '✓ Maximum 5 photos reached';
+      document.getElementById('add-photo-btn').disabled = true;
+      return;
+    }
+    var idx = photoSlots.length;
+    photoSlots.push({ src: '', desc: '' });
+    renderPhotoSlots();
+  }
+
+  function renderPhotoSlots() {
+    var container = document.getElementById('photo-slots');
+    container.innerHTML = '';
+    photoSlots.forEach(function(slot, idx) {
+      // Build each slot using DOM methods to avoid quote issues
+      var slotDiv = document.createElement('div');
+      slotDiv.className = 'photo-slot';
+
+      // Thumbnail
+      var fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.id   = 'photo-file-' + idx;
+      fileInput.accept = 'image/*';
+      fileInput.style.display = 'none';
+      fileInput.onchange = (function(i) { return function() { loadPhotoFile(this, i); }; })(idx);
+
+      var thumb = document.createElement('div');
+      thumb.className = 'photo-slot-thumb';
+      thumb.appendChild(fileInput);
+      // Reference the fileInput directly — no getElementById needed
+      thumb.onclick = (function(fi) { return function() { fi.click(); }; })(fileInput);
+
+      if (slot.src) {
+        var img = document.createElement('img');
+        img.src = slot.src;
+        img.alt = 'photo';
+        thumb.appendChild(img);
+      } else {
+        thumb.textContent = '📷';
+      }
+
+      // Right side
+      var right = document.createElement('div');
+      right.className = 'photo-slot-right';
+
+      var nameSpan = document.createElement('span');
+      nameSpan.className = 'photo-slot-name';
+      nameSpan.textContent = slot.src ? '✓ Photo ' + (idx+1) + ' uploaded' : 'Click thumbnail to upload photo ' + (idx+1);
+      if (!slot.src) nameSpan.style.color = 'rgba(255,255,255,0.3)';
+
+      var descDiv = document.createElement('div');
+      descDiv.className = 'photo-slot-desc';
+      var descInput = document.createElement('input');
+      descInput.type = 'text';
+      descInput.placeholder = 'Description e.g. Our signature birthday cake';
+      descInput.value = slot.desc || '';
+      descInput.oninput = (function(i) { return function() { updatePhotoDesc(this, i); }; })(idx);
+      descDiv.appendChild(descInput);
+
+      var removeBtn = document.createElement('button');
+      removeBtn.className = 'photo-slot-remove';
+      removeBtn.textContent = '✕ Remove';
+      removeBtn.title = 'Remove';
+      removeBtn.onclick = (function(i) { return function() { removePhotoSlot(i); }; })(idx);
+
+      right.appendChild(nameSpan);
+      right.appendChild(descDiv);
+      right.appendChild(removeBtn);
+
+      slotDiv.appendChild(thumb);
+      slotDiv.appendChild(right);
+      container.appendChild(slotDiv);
+    });
+    // Update add button
+    var btn = document.getElementById('add-photo-btn');
+    if (photoSlots.length >= 5) {
+      btn.textContent = '✓ Maximum 5 photos reached';
+      btn.disabled = true;
+      btn.style.opacity = '0.4';
+    } else {
+      btn.textContent = '+ Add Another Photo';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }
+  }
+
+  function loadPhotoFile(input, idx) {
+    if (!input.files || !input.files[0]) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      photoSlots[idx].src = e.target.result;
+      renderPhotoSlots();
+      savePhotosToStorage();
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+
+  function updatePhotoDesc(input, idx) {
+    photoSlots[idx].desc = input.value;
+    savePhotosToStorage();
+  }
+
+  function removePhotoSlot(idx) {
+    photoSlots.splice(idx, 1);
+    renderPhotoSlots();
+    savePhotosToStorage();
+  }
+
+  function savePhotosToStorage() {
+    try {
+      localStorage.setItem('instasite_photos',   JSON.stringify(photoSlots.map(function(s) { return s.src; })));
+      localStorage.setItem('instasite_captions', JSON.stringify(photoSlots.map(function(s) { return s.desc; })));
+    } catch(e) {}
+  }
+
+  // Initialize with one empty slot
+  addPhotoSlot();
+
+  // ── PHONE FORMAT ──
+  function formatPhone(input) {
+    var digits = input.value.replace(/\D/g, '').slice(0, 10);
+    var result = '';
+    if (digits.length === 0)      result = '';
+    else if (digits.length <= 3)  result = '(' + digits;
+    else if (digits.length <= 6)  result = '(' + digits.slice(0,3) + ') ' + digits.slice(3);
+    else result = '(' + digits.slice(0,3) + ') ' + digits.slice(3,6) + '-' + digits.slice(6);
+    input.value = result;
+  }
+
+  // ── POPULATE SUMMARY ──
+  function populateSummary() {
+    document.getElementById('sum-name').textContent     = document.getElementById('biz-name').value || '—';
+    document.getElementById('sum-type').textContent     = bizTypeNames[document.getElementById('biz-type').value] || '—';
+    document.getElementById('sum-tagline').textContent  = document.getElementById('biz-tagline').value || 'Not provided';
+    document.getElementById('sum-location').textContent = (document.getElementById('biz-city').value + ', ' + document.getElementById('biz-state').value) || '—';
+    document.getElementById('sum-phone').textContent    = document.getElementById('biz-phone').value || '—';
+    document.getElementById('sum-email').textContent    = document.getElementById('biz-email').value || '—';
+    document.getElementById('sum-color').textContent    = selectedColorName + ' / Primary Text: ' + selectedPrimaryTextColorName + ' / Secondary Text: ' + selectedSecondaryTextColorName;
+    document.getElementById('sum-style').textContent    = styleNames[selectedStyle];
+    document.getElementById('sum-services').textContent = services.length ? services.join(', ') : '—';
+    document.getElementById('sum-hours').textContent    = document.getElementById('biz-hours').value || 'Not provided';
+  }
+
+  // ── GENERATE WEBSITE ──
+  function generateWebsite() {
+    var overlay = document.getElementById('generating-overlay');
+    overlay.classList.add('show');
+    window.scrollTo({ top: 0 });
+
+    var steps = ['gen-1','gen-2','gen-3','gen-4','gen-5'];
+    var delays = [0, 1200, 2400, 3600, 4800];
+
+    steps.forEach(function(id, idx) {
+      setTimeout(function() {
+        // Mark previous as done
+        if (idx > 0) {
+          var prev = document.getElementById(steps[idx - 1]);
+          prev.classList.remove('active');
+          prev.classList.add('done');
+          prev.querySelector('.gen-step-icon').textContent = '✓';
+        }
+        // Mark current as active
+        document.getElementById(id).classList.add('active');
+      }, delays[idx]);
+    });
+
+    // Redirect to preview after generation
+    setTimeout(function() {
+      var last = document.getElementById('gen-5');
+      last.classList.remove('active');
+      last.classList.add('done');
+      last.querySelector('.gen-step-icon').textContent = '✓';
+
+      // Collect all data and redirect to preview
+      var params = new URLSearchParams({
+        name:    document.getElementById('biz-name').value,
+        type:    document.getElementById('biz-type').value,
+        tagline: document.getElementById('biz-tagline').value,
+        city:    document.getElementById('biz-city').value,
+        state:   document.getElementById('biz-state').value,
+        phone:   document.getElementById('biz-phone').value,
+        email:   document.getElementById('biz-email').value,
+        address: document.getElementById('biz-address').value,
+        instagram: document.getElementById('biz-instagram').value,
+        facebook:  document.getElementById('biz-facebook').value,
+        about:   document.getElementById('biz-about').value,
+        services: services.join('|'),
+        hours:   document.getElementById('biz-hours').value,
+        color:   selectedColor,
+        textColor: selectedPrimaryTextColor,
+        secondaryTextColor: selectedSecondaryTextColor,
+        style:   selectedStyle
+      });
+
+      window.location.href = 'preview.html?' + params.toString();
+    }, 6500);
+  }
+</script>
+
+</body>
+</html>
