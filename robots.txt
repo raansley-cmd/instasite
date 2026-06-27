@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /instasite/
+Allow: /instasite/index.html
+Allow: /instasite/add-pages.html
+Disallow: /instasite/questionnaire.html
+Disallow: /instasite/preview.html
+Disallow: /instasite/payment.html
+Disallow: /instasite/success.html
+
+Sitemap: https://raansley-cmd.github.io/instasite/sitemap.xml
