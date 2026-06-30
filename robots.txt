@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /add-pages.html
+Disallow: /questionnaire.html
+Disallow: /preview.html
+Disallow: /payment.html
+Disallow: /success.html
+
+Sitemap: https://www.instasitenow.com/sitemap.xml
